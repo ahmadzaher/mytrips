@@ -23,7 +23,7 @@ trait ApiResponser
      * @param  int|null  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function success($data, string $message = null, int $code = 200)
+    protected function success($data = null, string $message = null, int $code = 200)
     {
         return response()->json([
             'status' => 'Success',
@@ -47,6 +47,11 @@ trait ApiResponser
             'message' => $message,
             'data' => $data
         ], $code);
+    }
+
+    protected function forbidden()
+    {
+        return $this->error('Forbidden', 403);
     }
 
 }

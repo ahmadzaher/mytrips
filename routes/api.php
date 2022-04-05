@@ -19,9 +19,12 @@ Route::post('/auth/register', [AuthController::class, 'register']);
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 
-Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/profile', function(Request $request) {
         return auth()->user();
+    });
+    Route::prefix('user')->middleware(['role:user'])->group(function () {
+        Route::apiResource('advertisement', \App\Http\Controllers\api\AdvertisementController::class);
     });
 
     Route::post('/auth/logout', [AuthController::class, 'logout']);
