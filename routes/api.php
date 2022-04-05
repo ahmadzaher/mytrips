@@ -20,13 +20,12 @@ Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/profile', function(Request $request) {
-        return auth()->user();
-    });
     Route::prefix('user')->middleware(['role:user'])->group(function () {
         Route::apiResource('advertisement', \App\Http\Controllers\api\AdvertisementController::class);
     });
 
+    Route::get('/profile', [\App\Http\Controllers\api\ProfileController::class, 'show']);
+    Route::put('/profile', [\App\Http\Controllers\api\ProfileController::class, 'update']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
 
