@@ -24,6 +24,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResource('advertisement', \App\Http\Controllers\api\AdvertisementController::class);
     });
 
+
+    Route::prefix('admin')->middleware(['role:admin|staff'])->group(function () {
+        Route::apiResource('allowed_packages', \App\Http\Controllers\api\AllowdPackageController::class);
+    });
+
+
     Route::get('/profile', [\App\Http\Controllers\api\ProfileController::class, 'show']);
     Route::put('/profile', [\App\Http\Controllers\api\ProfileController::class, 'update']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);

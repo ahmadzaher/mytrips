@@ -15,6 +15,12 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         $user = auth()->user();
+
+        $roles = $user->roles()->get();
+
+        if(count($roles) > 0)
+            $user->role = $roles[0];
+
         return $this->success($user);
     }
 

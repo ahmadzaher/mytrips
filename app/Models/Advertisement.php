@@ -17,4 +17,19 @@ class Advertisement extends Model
         'date',
         'additional_information',
     ];
+
+
+
+    public function allowed_packages() {
+
+        return $this->belongsToMany(AllowedPackage::class,'advertisements_allowed_packages');
+
+    }
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

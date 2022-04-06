@@ -19,9 +19,8 @@ class AdvertisementController extends Controller
      */
     public function index(Request $request)
     {
-        $user = auth()->user();
-        $ads = Advertisement::latest()->paginate();
-        return $this->success($ads, null, 201);
+        $ads = Advertisement::with('allowed_packages')->with('user')->latest()->paginate();
+        return $this->success($ads);
     }
 
     /**
@@ -45,6 +44,7 @@ class AdvertisementController extends Controller
             'weight' => ['required', 'numeric'],
             'cost' => ['required', 'numeric'],
             'date' => ['required', 'date_format:Y-m-d H:i:s', 'after_or_equal:'.date('Y-m-d H:i:s')],
+            'allowed_packages' => ['required']
         ]);
         $advertisement = new Advertisement([
             'user_id' => $user->id,
@@ -54,9 +54,16 @@ class AdvertisementController extends Controller
             'cost' => $request->cost,
             'date' => $request->date,
             'additional_information' => $request->additional_information,
-
         ]);
+
+
         $advertisement->save();
+
+
+        $allowed_packages = (array_unique($request->allowed_packages, SORT_REGULAR));
+
+        $advertisement->allowed_packages()->sync($allowed_packages);
+        $advertisement = Advertisement::with('allowed_packages')->with('user')->find($advertisement->id);
 
         return $this->success($advertisement, null, 201);
     }
@@ -69,7 +76,8 @@ class AdvertisementController extends Controller
      */
     public function show(Advertisement $advertisement)
     {
-        return $this->success($advertisement, null, 201);
+        $advertisement = Advertisement::with('allowed_packages')->with('user')->find($advertisement->id);
+        return $this->success($advertisement);
     }
 
     /**
@@ -92,6 +100,7 @@ class AdvertisementController extends Controller
             'weight' => ['required', 'numeric'],
             'cost' => ['required', 'numeric'],
             'date' => ['required', 'date_format:Y-m-d H:i:s', 'after_or_equal:'.date('Y-m-d H:i:s')],
+            'allowed_packages' => ['required']
         ]);
 
         $advertisement->user_id = $user_id;
@@ -101,6 +110,11 @@ class AdvertisementController extends Controller
         $advertisement->cost = $request->cost;
         $advertisement->date = $request->date;
         $advertisement->save();
+
+
+        $allowed_packages = (array_unique($request->allowed_packages, SORT_REGULAR));
+        $advertisement->allowed_packages()->sync($allowed_packages);
+        $advertisement = Advertisement::with('allowed_packages')->with('user')->find($advertisement->id);
 
         return $this->success($advertisement);
     }
@@ -114,8 +128,10 @@ class AdvertisementController extends Controller
     public function destroy(Advertisement $advertisement)
     {
         $user = auth()->user();
-        if ($user->id == $advertisement->user_id)
+        if ($user->id == $advertisement->user_id){
+            $advertisement->delete();
             return $this->success(null, 'Deleted Successfully!');
+        }
         return $this->error('Something went wrong!', 403);
 
     }

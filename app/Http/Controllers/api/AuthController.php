@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
@@ -23,14 +24,23 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $attr['name'],
             'password' => bcrypt($attr['password']),
-            'email' => $attr['email']
+            'email' => $attr['email'],
+            'phone_number' => $request->phone_number
         ]);
 
         $user->attachRole('user');
+        $token = $user->createToken('API Token')->plainTextToken;
+        $cookie = cookie('jwt', $token, 60 * 24); // 1 DAY
 
-        return $this->success([
-            'token' => $user->createToken('API Token')->plainTextToken
-        ]);
+
+        return response([
+            'status' => 'Success',
+            'message' => null,
+            'data' => [
+                'token' => $token
+            ]
+        ])->withCookie($cookie);
+
     }
 
     public function login(Request $request)
@@ -44,17 +54,29 @@ class AuthController extends Controller
             return $this->error('Credentials not match', 401);
         }
 
-        return $this->success([
-            'token' => auth()->user()->createToken('API Token')->plainTextToken
-        ]);
+        $token = auth()->user()->createToken('API Token')->plainTextToken;
+
+        $cookie = cookie('jwt', $token, 60 * 24); // 1 DAY
+
+        return response([
+            'status' => 'Success',
+            'message' => 'Logged in successfully',
+            'data' => [
+                'token' => $token
+            ]
+        ])->withCookie($cookie);
+
     }
 
     public function logout()
     {
         auth()->user()->tokens()->delete();
 
-        return [
+        $cookie = Cookie::forget('jwt');
+
+        return response([
             'message' => 'Tokens Revoked'
-        ];
+        ])->withCookie($cookie);
+
     }
 }
