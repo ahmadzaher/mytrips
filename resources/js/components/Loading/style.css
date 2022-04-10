@@ -1,0 +1,127 @@
+/* Center the svg and set the background to white */
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Make the svg a white circle and give it the default spinning animation */
+.loadingSvg {
+  background-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 3s ease infinite alternate;
+}
+
+/*Give each dot a radius of 20*/
+.loadingShape {
+  r: 20;
+}
+
+/*Give each dot its positioning and set the default animation and color for each */
+.loadingShape:nth-child(1) {
+  cy: 50;
+  cx: 50;
+  fill: #c20f00;
+  animation: movein 3s ease infinite alternate;
+}
+.loadingShape:nth-child(2) {
+  cy: 50;
+  cx: 150;
+  fill: #ffdd22;
+  animation: movein 3s ease infinite alternate;
+}
+.loadingShape:nth-child(3) {
+  cy: 150;
+  cx: 50;
+  fill: #2374c6;
+  animation: movein 3s ease infinite alternate;
+}
+.loadingShape:nth-child(4) {
+  cy: 150;
+  cx: 150;
+  fill: #000000;
+  animation: movein 3s ease infinite alternate;
+}
+
+
+/* Create the.loadingSlider */
+.Loadin.loadingSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ffdd22;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.loadingSlider:before {
+  position: absolute;
+  content: "";
+  height: 19px;
+  width: 19px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #000000;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+/* Change color on checked */
+input:checked + .loadingSlider {
+  background-color: #c20f00;
+}
+
+/* Set second color change */
+.movement input:checked + .loadingSlider {
+  background-color: #2374c6;
+}
+
+/* Set the focus to same color as when checked*/
+input:focus + .loadingSlider {
+  box-shadow: 0 0 3px #c20f00;
+}
+.movement input:focus + .loadingSlider {
+  box-shadow: 0 0 3px #2374c6;
+}
+
+/* Actually move the.loadingSlider when checked*/
+input:checked + .loadingSlider:before {
+  -webkit-transform: translateX(25px);
+  -ms-transform: translateX(25px);
+  transform: translateX(25px);
+}
+
+/* Round the.loadingSliders */
+.loadingSlider.round {
+  border-radius: 34px;
+}
+.loadingSlider.round:before {
+  border-radius: 50%;
+}
+
+/*Spin the svg so all the dots spin*/
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* Move all the dots toward the center */
+@keyframes movein {
+  to {
+    cy: 100;
+    cx: 100;
+  }
+}
+
+/* Set a bouncy ball type movement for the dots */
+@keyframes moveup {
+  to {
+    cy: 20;
+  }
+}

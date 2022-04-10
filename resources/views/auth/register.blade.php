@@ -61,16 +61,6 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="role-id" class="col-md-4 col-form-label text-md-end">{{__('Register as:')}}</label>
-                            <div class="col-md-6">
-                                <select class="form-control" name="role_id" id="role-id">
-                                    <option selected value="user">User</option>
-                                    <option value="staff">Staff</option>
-                                </select>
-                            </div>
-                        </div>
-
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

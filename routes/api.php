@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\AdvertisementController;
 use App\Http\Controllers\api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/register', [AuthController::class, 'register']);
 
 Route::post('/auth/login', [AuthController::class, 'login']);
+
+Route::prefix('guest')->group(function () {
+    Route::get('advertisement', [AdvertisementController::class, 'index']);
+    Route::get('advertisement/{advertisement}', [AdvertisementController::class, 'show']);
+});
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('user')->middleware(['role:user'])->group(function () {

@@ -62,17 +62,24 @@ class AuthController extends Controller
             'status' => 'Success',
             'message' => 'Logged in successfully',
             'data' => [
-                'token' => $token
+                'token' => $token,
+                'user' => auth()->user()
             ]
         ])->withCookie($cookie);
 
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         auth()->user()->tokens()->delete();
 
         $cookie = Cookie::forget('jwt');
+
+        try {
+            $request->session()->invalidate();
+        }catch (\Exception $e){
+            // From Api
+        }
 
         return response([
             'message' => 'Tokens Revoked'
