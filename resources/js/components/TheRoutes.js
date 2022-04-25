@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Login from "./Login";
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, HashRouter, Routes, BrowserRouter } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute/ProtectedRoute';
 import { GuestRoute } from './GuestRoute/GuestRoute';
 import Dashboard from './Dashboard/Dashboard';
@@ -14,20 +14,18 @@ function TheRoutes() {
     if(!isReady)
         return <Loading />
     return (
-            <BrowserRouter>
+            <HashRouter>
                 <Routes>
-                    <Route path="/app/login" element={
-                        <GuestRoute>
-                            <Login />
-                        </GuestRoute>
-                    } />
-                    <Route path="/app/dashboard" element={
-                        <ProtectedRoute>
-                            <Dashboard />
-                        </ProtectedRoute>
-                    } />
+                    <Route path="/">
+                        <Route path="/app/login" element={<GuestRoute />}>
+                            <Route path="/app/login" element={<Login />} />
+                        </Route>
+                        <Route path="/app/dashboard" element={<ProtectedRoute />}>
+                            <Route path="/app/dashboard" element={<Dashboard />} />
+                        </Route>
+                    </Route>
                 </Routes>
-            </BrowserRouter>
+            </HashRouter>
     );
 }
 
