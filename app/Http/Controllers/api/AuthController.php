@@ -32,12 +32,16 @@ class AuthController extends Controller
         $token = $user->createToken('API Token')->plainTextToken;
         $cookie = cookie('jwt', $token, 60 * 24); // 1 DAY
 
+        if (!Auth::attempt($attr)) {
+            return $this->error('Credentials not match', 401);
+        }
 
         return response([
             'status' => 'Success',
             'message' => null,
             'data' => [
-                'token' => $token
+                'token' => $token,
+                'user' => auth()->user()
             ]
         ])->withCookie($cookie);
 
