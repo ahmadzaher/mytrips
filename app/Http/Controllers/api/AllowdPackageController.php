@@ -17,7 +17,7 @@ class AllowdPackageController extends Controller
      */
     public function index()
     {
-        $allowedPackages = AllowedPackage::latest()->paginate();
+        $allowedPackages = AllowedPackage::latest()->get();
         return $this->success($allowedPackages);
     }
 

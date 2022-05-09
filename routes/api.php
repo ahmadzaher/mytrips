@@ -28,6 +28,7 @@ Route::prefix('guest')->group(function () {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('user')->middleware(['role:user'])->group(function () {
         Route::apiResource('advertisement', \App\Http\Controllers\api\AdvertisementController::class);
+        Route::get('/allowed_packages', [\App\Http\Controllers\api\AllowdPackageController::class, 'index']);
     });
 
 
