@@ -36,12 +36,19 @@ class AuthController extends Controller
             return $this->error('Credentials not match', 401);
         }
 
+        $user = auth()->user();
+
+        $roles = $user->roles()->get();
+
+        if(count($roles) > 0)
+            $user->role = $roles[0];
+
         return response([
             'status' => 'Success',
             'message' => null,
             'data' => [
                 'token' => $token,
-                'user' => auth()->user()
+                'user' => $user
             ]
         ])->withCookie($cookie);
 
@@ -62,12 +69,20 @@ class AuthController extends Controller
 
         $cookie = cookie('jwt', $token, 60 * 24); // 1 DAY
 
+
+        $user = auth()->user();
+
+        $roles = $user->roles()->get();
+
+        if(count($roles) > 0)
+            $user->role = $roles[0];
+
         return response([
             'status' => 'Success',
             'message' => 'Logged in successfully',
             'data' => [
                 'token' => $token,
-                'user' => auth()->user()
+                'user' => $user
             ]
         ])->withCookie($cookie);
 
