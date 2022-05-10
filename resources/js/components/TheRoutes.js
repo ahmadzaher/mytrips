@@ -16,14 +16,14 @@ function TheRoutes() {
     return (
             <HashRouter>
                 <Routes>
-                    <Route path="/">
-                        <Route path="/app/login" element={<GuestRoute />}>
+                        <Route path="/" element={<GuestRoute />}>
+                            <Route path="/" element={<Login />} />
                             <Route path="/app/login" element={<Login />} />
                         </Route>
-                        <Route path="/app/dashboard" element={<ProtectedRoute />}>
+                        <Route path="/" element={<ProtectedRoute />}>
+                            <Route path="/" element={<Dashboard />} />
                             <Route path="/app/dashboard" element={<Dashboard />} />
                         </Route>
-                    </Route>
                 </Routes>
             </HashRouter>
     );
