@@ -4,8 +4,6 @@ export const AuthContext = React.createContext(null);
 
 import axios from 'axios'
 
-export const SiteUrl = 'http://127.0.0.1:8000';
-
 export const UserContext = props => {
 
   const [isLoggedIn, setLoginSuccess] = useState(false);

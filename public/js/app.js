@@ -25924,7 +25924,6 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AuthContext": () => (/* binding */ AuthContext),
-/* harmony export */   "SiteUrl": () => (/* binding */ SiteUrl),
 /* harmony export */   "UserContext": () => (/* binding */ UserContext)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -25947,7 +25946,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var AuthContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createContext(null);
 
 
-var SiteUrl = 'http://127.0.0.1:8000';
 var UserContext = function UserContext(props) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
