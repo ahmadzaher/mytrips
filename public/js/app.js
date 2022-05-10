@@ -25923,7 +25923,6 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ApiUrl": () => (/* binding */ ApiUrl),
 /* harmony export */   "AuthContext": () => (/* binding */ AuthContext),
 /* harmony export */   "SiteUrl": () => (/* binding */ SiteUrl),
 /* harmony export */   "UserContext": () => (/* binding */ UserContext)
@@ -25949,7 +25948,6 @@ var AuthContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createContext(
 
 
 var SiteUrl = 'http://127.0.0.1:8000';
-var ApiUrl = "".concat(SiteUrl, "/api");
 var UserContext = function UserContext(props) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -25996,7 +25994,7 @@ var UserContext = function UserContext(props) {
     setLoginSuccess(false);
     setLoginError(null);
     setIsReady(false);
-    axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/login', {
+    axios__WEBPACK_IMPORTED_MODULE_1___default().post('api/auth/login', {
       email: email,
       password: password
     }).then(function (res) {
@@ -26016,7 +26014,7 @@ var UserContext = function UserContext(props) {
 
   var logout = function logout() {
     setIsReady(false);
-    axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/logout')["catch"](function (e) {
+    axios__WEBPACK_IMPORTED_MODULE_1___default().post('api/auth/logout')["catch"](function (e) {
       return console.log(e);
     }).then(function () {
       window.location.reload();
@@ -26030,7 +26028,7 @@ var UserContext = function UserContext(props) {
 
   react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
     setIsReady(false);
-    axios__WEBPACK_IMPORTED_MODULE_1___default().get(ApiUrl + '/profile').then(function (res) {
+    axios__WEBPACK_IMPORTED_MODULE_1___default().get('api/profile').then(function (res) {
       if (res.status === 200) {
         setLoginSuccess(true);
         setName(res.data.data.name);

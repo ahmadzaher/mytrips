@@ -5,7 +5,6 @@ export const AuthContext = React.createContext(null);
 import axios from 'axios'
 
 export const SiteUrl = 'http://127.0.0.1:8000';
-export const ApiUrl = `${SiteUrl}/api`
 
 export const UserContext = props => {
 
@@ -33,7 +32,7 @@ export const UserContext = props => {
     setIsReady(false)
 
 
-    axios.post('/api/auth/login', {
+    axios.post('api/auth/login', {
         email,
         password
     })
@@ -55,7 +54,7 @@ export const UserContext = props => {
   const logout = () =>
   {
       setIsReady(false)
-      axios.post('/api/auth/logout')
+      axios.post('api/auth/logout')
           .catch((e) => console.log(e))
           .then(() => {
               window.location.reload()
@@ -69,7 +68,7 @@ export const UserContext = props => {
 
   React.useEffect(() => {
       setIsReady(false)
-      axios.get(ApiUrl + '/profile')
+      axios.get('api/profile')
       .then((res) => {
           if(res.status === 200)
           {
