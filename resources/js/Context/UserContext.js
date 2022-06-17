@@ -22,6 +22,25 @@ export const UserContext = props => {
 
   const [name, setName] = useState('')
 
+
+    const [alertOpen, setAlertOpen] = React.useState(false);
+    const [alertSeverity, setAlertSeverity] = React.useState('success')
+    const [alertMessage, setAlertMessage] = React.useState('');
+
+    const handleAlert = (severity, message) => {
+        setAlertSeverity(severity)
+        setAlertMessage(message)
+        setAlertOpen(true);
+    };
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setAlertOpen(false);
+    };
+
   const login = (email, password) =>
   {
     setLoginPending(true);
@@ -95,6 +114,11 @@ export const UserContext = props => {
             phoneNumber,
             name,
             login,
+            alertOpen,
+            alertSeverity,
+            alertMessage,
+            handleAlert,
+            handleAlertClose,
             logout
         }}
       >

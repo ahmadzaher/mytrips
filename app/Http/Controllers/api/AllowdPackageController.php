@@ -69,7 +69,7 @@ class AllowdPackageController extends Controller
         ]);
 
         $allowedPackage->name = $request->name;
-        $allowedPackage->description = $request->from;
+        $allowedPackage->description = $request->description;
         $allowedPackage->save();
 
         return $this->success($allowedPackage);

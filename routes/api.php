@@ -34,6 +34,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('admin')->middleware(['role:admin|staff'])->group(function () {
         Route::apiResource('allowed_packages', \App\Http\Controllers\api\AllowdPackageController::class);
+        Route::apiResource('user', \App\Http\Controllers\api\UserController::class);
+
+        Route::prefix('staff')->group(function () {
+            Route::apiResource('user', \App\Http\Controllers\api\StaffController::class);
+        });
     });
 
 
