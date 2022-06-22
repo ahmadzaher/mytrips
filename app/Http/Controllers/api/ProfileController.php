@@ -45,7 +45,7 @@ class ProfileController extends Controller
             'phone_number' => ['max:255'],
             'avatar' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'confirmation_photo' => 'image|mimes:jpg,png,jpeg|max:2048',
-            'confirmation_video' => 'mimes:mp4| max:20000',
+            'confirmation_video' => 'mimes:mp4|max:20000',
         ]);
         $user->email = $request->email;
         $user->name = $request->name;
