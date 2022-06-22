@@ -19,6 +19,13 @@ class StaffController extends Controller
     {
 //        $users = User::whereRoleIs('user')->orWhereRoleIs('admin')->latest()->get();
         $users = User::whereRoleIs('admin')->orWhereRoleIs('staff')->with('roles')->latest()->get();
+        foreach($users as $key => $user)
+        {
+            $avatar = $user->getFirstMediaUrl('thumb', 'thumb') != null ? url($user->getFirstMediaUrl('thumb', 'thumb')) : '';
+
+            $users[$key]['avatar'] = $avatar;
+            unset($users[$key]['media']);
+        }
         return $this->success($users);
     }
 
@@ -47,6 +54,15 @@ class StaffController extends Controller
 
         $user->attachRole('user');
 
+        if (isset($request->avatar)) {
+            $user->clearMediaCollection('thumb');
+            $user
+                ->addMediaFromRequest('avatar')
+                ->toMediaCollection('thumb');
+        }
+        $user->avatar = $user->getFirstMediaUrl('thumb', 'thumb');
+        unset($user->media);
+
         $roles = $user->roles()->get();
         $user->role = $roles[0];
 
@@ -64,6 +80,8 @@ class StaffController extends Controller
         $roles = $user->roles()->get();
         if(count($roles) > 0)
             $user->role = $roles[0];
+        $user->avatar = $user->getFirstMediaUrl('thumb', 'thumb');
+        unset($user->media);
 
         return $this->success($user);
     }
@@ -88,6 +106,16 @@ class StaffController extends Controller
         $user->phone_number = $request->phone_number;
         $user->password = bcrypt($request->password);
         $user->save();
+
+        if (isset($request->avatar)) {
+            $user->clearMediaCollection('thumb');
+            $user
+                ->addMediaFromRequest('avatar')
+                ->toMediaCollection('thumb');
+        }
+
+        $user->avatar = $user->getFirstMediaUrl('thumb', 'thumb');
+        unset($user->media);
 
         return $this->success($user);
     }

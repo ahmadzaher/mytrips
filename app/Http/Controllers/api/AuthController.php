@@ -16,15 +16,18 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $attr = $request->validate([
+            'email' => 'required|string|email|',
+            'password' => 'required|string|min:6'
+        ]);
+        $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed'
+            'avatar' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
         $user = User::create([
-            'name' => $attr['name'],
-            'password' => bcrypt($attr['password']),
-            'email' => $attr['email'],
+            'name' => $request['name'],
+            'password' => bcrypt($request['password']),
+            'email' => $request['email'],
             'phone_number' => $request->phone_number
         ]);
 
@@ -37,6 +40,16 @@ class AuthController extends Controller
         }
 
         $user = auth()->user();
+
+
+        if (isset($request->avatar)) {
+            $user->clearMediaCollection('thumb');
+            $user
+                ->addMediaFromRequest('avatar')
+                ->toMediaCollection('thumb');
+        }
+        $user->avatar = $user->getFirstMediaUrl('thumb', 'thumb');
+        unset($user->media);
 
         $roles = $user->roles()->get();
 
@@ -61,6 +74,10 @@ class AuthController extends Controller
             'password' => 'required|string|min:6'
         ]);
 
+        $request->validate([
+            'avatar' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        ]);
+
         if (!Auth::attempt($attr)) {
             return $this->error('Credentials not match', 401);
         }
@@ -71,6 +88,15 @@ class AuthController extends Controller
 
 
         $user = auth()->user();
+
+        if (isset($request->avatar)) {
+            $user->clearMediaCollection('thumb');
+            $user
+                ->addMediaFromRequest('avatar')
+                ->toMediaCollection('thumb');
+        }
+        $user->avatar = $user->getFirstMediaUrl('thumb', 'thumb');
+        unset($user->media);
 
         $roles = $user->roles()->get();
 

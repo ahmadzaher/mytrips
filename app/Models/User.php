@@ -9,17 +9,42 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Traits\LaratrustUserTrait;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+
+class User extends Authenticatable implements HasMedia
 {
     use LaratrustUserTrait;
     use HasApiTokens, HasFactory, Notifiable;
+    use InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        // profile avatar
+        $this->addMediaConversion('thumb')
+            ->width(368)
+            ->height(232)
+            ->sharpen(10);
+        // confirmation photo
+        $this
+            ->addMediaCollection('confirmation_photo')
+            ->acceptsFile(function (File $file) {
+                return $file->mimeType === 'image/jpeg' || $file->mimeType === 'image/png' || $file->mimeType === 'image/jpg';
+            });
+        // confirmation video
+        $this
+            ->addMediaCollection('confirmation_photo')
+            ->acceptsFile(function (File $file) {
+                return $file->mimeType === 'mp4';
+            });
+    }
     protected $fillable = [
         'name',
         'email',

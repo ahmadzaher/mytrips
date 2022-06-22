@@ -6,10 +6,13 @@ import {useContext, useState} from "react";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from '@mui/icons-material/Edit';
+import CheckIcon from '@mui/icons-material/Check'
+import ClearIcon from '@mui/icons-material/Clear';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Grid from "@mui/material/Grid";
 import User from "./modals/User";
-import { Divider } from '@mui/material';
+import { Divider, Avatar } from '@mui/material';
+import ConfirmUser from "./modals/ConfirmUser";
 
 export default function Users({ type }) {
 
@@ -22,7 +25,19 @@ export default function Users({ type }) {
                     {'Name '}
                 </b>
             ),
-            width: 200
+            renderCell: (params) => (
+                <>
+                    {params.row.avatar === '' ?
+                        <Avatar style={{ backgroundColor: '#1f6cfa', marginRight: 10 }}>{Array.from(params.row.name)[0]}{Array.from(params.row.name)[1]}</Avatar>
+                        :
+                        <Avatar style={{ marginRight: 10 }} src={params.row.avatar} alt={"avatar"} />
+                    }
+                    <Typography>
+                        {' '}{params.row.name}
+                    </Typography>
+                </>
+            ),
+            width: 230
         },
         {
             field: 'email',
@@ -40,7 +55,7 @@ export default function Users({ type }) {
                     {'Phone Number '}
                 </b>
             ),
-            width: 190
+            width: 160
         },
         {
             field: 'created_at',
@@ -49,7 +64,7 @@ export default function Users({ type }) {
                     {'Created At '}
                 </b>
             ),
-            width: 130
+            width: 120
         },
         {
             field: 'is_confirmed',
@@ -59,9 +74,23 @@ export default function Users({ type }) {
                 </b>
             ),
             renderCell: (params) => (
-                <Typography color={"error.main"}>
-                    {params.row.is_confirmed === 0 ? 'No' : 'Yes'}
-                </Typography>
+                <>
+                    <Typography color={params.row.is_confirmed === 0 ? "error.main" : 'primary'}>
+                        {params.row.is_confirmed === 0 ? 'No' : 'Yes'}
+                    </Typography>
+                    {params.row.is_confirmed === 0 && params.row.confirmation_video !== '' && params.row.confirmation_photo !== '' ?
+                        <IconButton color="primary" onClick={() => editConfirm(params.row.id)}>
+                            <CheckIcon />
+                        </IconButton>
+                    : null}
+
+                    {params.row.is_confirmed === 1 ?
+                        <IconButton color="error" onClick={() => editConfirm(params.row.id)}>
+                            <ClearIcon />
+                        </IconButton>
+                    : null}
+
+                </>
             ),
             width: 130,
         },
@@ -119,7 +148,6 @@ export default function Users({ type }) {
             .then((res) => {
                 if(res.status === 200)
                 {
-                    console.log(res)
                     setName(res.data.data.name)
                     setEmail(res.data.data.email)
                     setPhoneNumber(res.data.data.phone_number)
@@ -130,6 +158,29 @@ export default function Users({ type }) {
                 alert('Something went wrong!')
             })
         handleClickOpen()
+    }
+
+
+    const editConfirm = (user_id) => {
+        setUserId(user_id)
+
+        axios.get(`api/admin/${type}/${user_id}`)
+            .then((res) => {
+                if(res.status === 200)
+                {
+                    setName(res.data.data.name)
+                    setEmail(res.data.data.email)
+                    setPhoneNumber(res.data.data.phone_number)
+                    setIsConfirmed(res.data.data.is_confirmed)
+                    setConfirmationPhoto(res.data.data.confirmation_photo)
+                    setConfirmationVideo(res.data.data.confirmation_video)
+                }
+            })
+            .catch((e) => {
+                console.log(e)
+                alert('Something went wrong!')
+            })
+        handleClickOpenConfirm()
     }
 
     const deleteRecord = (id) => {
@@ -153,8 +204,12 @@ export default function Users({ type }) {
     const [isReady, setIsReady] = useState(false);
     const [users, setUsers] = useState([])
     const [open, setOpen] = useState(false);
+    const [openConfirm, setOpenConfirm] = useState(false);
     const [userId, setUserId] = useState('');
     const [name, setName] = useState('');
+    const [isConfirmed, setIsConfirmed] = useState(0);;
+    const [confirmationPhoto, setConfirmationPhoto] = useState(0);
+    const [confirmationVideo, setConfirmationVideo] = useState(0);
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     React.useEffect(() => {
@@ -180,6 +235,9 @@ export default function Users({ type }) {
     const handleClickOpen = () => {
         setOpen(true);
     };
+    const handleClickOpenConfirm = () => {
+        setOpenConfirm(true);
+    };
 
     return (
         <div>
@@ -187,9 +245,9 @@ export default function Users({ type }) {
                 setIsReady={setIsReady}
                 open={open}
                 setOpen={setOpen}
+                handleClickOpen={handleClickOpen}
                 userId={userId}
                 setUserId={setUserId}
-                handleClickOpen={handleClickOpen}
                 name={name}
                 setName={setName}
                 email={email}
@@ -199,6 +257,26 @@ export default function Users({ type }) {
                 handleAlert={handleAlert}
                 type={type}
             />
+            <ConfirmUser
+                setIsReady={setIsReady}
+                openConfirm={openConfirm}
+                setOpenConfirm={setOpenConfirm}
+                handleClickOpenConfirm={handleClickOpenConfirm}
+                userId={userId}
+                setUserId={setUserId}
+                name={name}
+                setName={setName}
+                email={email}
+                setEmail={setEmail}
+                phoneNumber={phoneNumber}
+                setPhoneNumber={setPhoneNumber}
+                handleAlert={handleAlert}
+                type={type}
+                isConfirmed={isConfirmed}
+                setIsConfirmed={setIsConfirmed}
+                confirmationPhoto={confirmationPhoto}
+                confirmationVideo={confirmationVideo}
+            />
             <br />
             <Divider />
             <br />
@@ -206,9 +284,9 @@ export default function Users({ type }) {
                 <DataGrid
                     rows={users}
                     columns={columns}
-                    pageSize={10}
+                    pageSize={7}
                     rowSpacingType={'margin'}
-                    rowsPerPageOptions={[10]}
+                    rowsPerPageOptions={[7]}
                     loading={!isReady}
                     disableSelectionOnClick
                     disableDensitySelector
