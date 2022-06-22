@@ -23,6 +23,8 @@ class ProfileController extends Controller
                 ->toMediaCollection('thumb');
         }
         $user->avatar = $user->getFirstMediaUrl('thumb', 'thumb');
+        $user->confirmation_video = $user->getFirstMediaUrl('confirmation_video', 'confirmation_video');
+        $user->confirmation_photo = $user->getFirstMediaUrl('confirmation_photo', 'confirmation_photo');
         unset($user->media);
 
         $roles = $user->roles()->get();
