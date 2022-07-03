@@ -67,7 +67,7 @@ class ProfileController extends Controller
                 ->toMediaCollection('confirmation_photo');
         }
 
-        if (isset($request->avatar)) {
+        if (isset($request->confirmation_video)) {
             $user->clearMediaCollection('confirmation_video');
             $user
                 ->addMediaFromRequest('confirmation_video')
