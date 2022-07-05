@@ -25,6 +25,28 @@ Route::prefix('guest')->group(function () {
     Route::get('advertisement/{advertisement}', [AdvertisementController::class, 'show']);
 });
 
+
+Route::group(['prefix' => 'countries'], function() {
+
+    Route::get('search/{name}/{parent_id?}', 	'\Igaster\LaravelCities\GeoController@search');
+
+    Route::get('item/{id}', 		'\Igaster\LaravelCities\GeoController@item');
+
+    Route::get('cities/{id}', 	'\Igaster\LaravelCities\GeoController@children');
+
+    Route::get('parent/{id}', 	'\Igaster\LaravelCities\GeoController@parent');
+
+    Route::get('country/{code}',	'\Igaster\LaravelCities\GeoController@country');
+
+    Route::get('/', 		'\Igaster\LaravelCities\GeoController@countries');
+
+    Route::get('ancestors/{id}','\Igaster\LaravelCities\GeoController@ancestors');
+
+    Route::get('breadcrumbs/{id}','\Igaster\LaravelCities\GeoController@breadcrumbs');
+
+});
+
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('user')->middleware(['role:user'])->group(function () {
         Route::apiResource('advertisement', \App\Http\Controllers\api\AdvertisementController::class);
@@ -50,3 +72,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "420220cd82d6538a60d40db0f1f6ab15",
+    "content-hash": "2a98a48371c3e1d203e19a31af95c76e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1303,6 +1303,69 @@
                 }
             ],
             "time": "2022-03-20T21:55:58+00:00"
+        },
+        {
+            "name": "igaster/laravel_cities",
+            "version": "v1.3.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/igaster/laravel_cities.git",
+                "reference": "8ff3c4bfdf5152f1858d54d256926071ee0fc1c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/igaster/laravel_cities/zipball/8ff3c4bfdf5152f1858d54d256926071ee0fc1c0",
+                "reference": "8ff3c4bfdf5152f1858d54d256926071ee0fc1c0",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "5.*|^6.0|7.*|8.*"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0|^5.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Igaster\\LaravelCities\\GeoServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Igaster\\LaravelCities\\": "src/",
+                    "Igaster\\LaravelCities\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Giannis Gasteratos",
+                    "email": "igasteratos@gmail.com"
+                }
+            ],
+            "description": "Seed all countries/cities from geonames.org database. Searchable DB tree, ready to use API & a bonus vue.js component!",
+            "homepage": "https://github.com/igaster/laravel_cities.git",
+            "keywords": [
+                "GeoNames.org",
+                "cities",
+                "countries",
+                "geolocation",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/igaster/laravel_cities/issues",
+                "source": "https://github.com/igaster/laravel_cities/tree/v1.3.11"
+            },
+            "time": "2020-09-13T20:20:30+00:00"
         },
         {
             "name": "intervention/image",
