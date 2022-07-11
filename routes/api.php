@@ -16,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// ssh access : ssh -p 65002 u526533852@151.106.96.211
+
+// php mysql : https://auth-db437.hstgr.io/index.php?db=u526533852_trips
+
+// username : u526533852_ahmad_97341t
+
+// password : Khrezaty1@#
+
 Route::post('/auth/register', [AuthController::class, 'register']);
 
 Route::post('/auth/login', [AuthController::class, 'login']);
