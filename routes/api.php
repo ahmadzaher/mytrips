@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 // php mysql : https://auth-db437.hstgr.io/index.php?db=u526533852_trips
 
+// database name : u526533852_trips
+
 // username : u526533852_ahmad_97341t
 
 // password : Khrezaty1@#
@@ -63,6 +65,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
     Route::prefix('admin')->middleware(['role:admin|staff'])->group(function () {
+        Route::apiResource('advertisement', \App\Http\Controllers\api\AdvertisementController::class);
         Route::apiResource('allowed_packages', \App\Http\Controllers\api\AllowdPackageController::class);
         Route::apiResource('user', \App\Http\Controllers\api\UserController::class);
 

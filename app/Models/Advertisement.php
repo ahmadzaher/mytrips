@@ -10,8 +10,10 @@ class Advertisement extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'from',
-        'to',
+        'from_country',
+        'to_country',
+        'from_city',
+        'to_city',
         'weight',
         'cost',
         'date',
