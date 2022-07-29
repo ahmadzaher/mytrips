@@ -33,6 +33,36 @@ class AdvertisementController extends Controller
         return $this->success($ads);
     }
 
+
+    /**
+     * Display a listing of user advertisements.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function myAdvertisements(Request $request)
+    {
+        $user = auth()->user();
+        $ads = Advertisement::with('allowed_packages')
+            ->where('user_id', $user->id)
+            ->with('user')
+            ->with('orders')
+            ->latest()->paginate();
+        foreach ($ads as $key => $advertisement)
+        {
+            $ads[$key]->from_country_name = is_object(DB::table('geo')->where('id', $advertisement->from_country)->first()) ? DB::table('geo')->where('id', $advertisement->from_country)->first()->name : '';
+            $ads[$key]->from_city_name = is_object(DB::table('geo')->where('id', $advertisement->from_city)->first()) ? DB::table('geo')->where('id', $advertisement->from_city)->first()->name : '';
+            $ads[$key]->to_country_name = is_object(DB::table('geo')->where('id', $advertisement->to_country)->first()) ? DB::table('geo')->where('id', $advertisement->to_country)->first()->name : '';
+            $ads[$key]->to_city_name = is_object(DB::table('geo')->where('id', $advertisement->to_city)->first()) ? DB::table('geo')->where('id', $advertisement->to_city)->first()->name : '';
+
+            $ads[$key]->available_weight = $ads[$key]->weight;
+            foreach ($advertisement->orders as $order)
+            {
+                $ads[$key]->available_weight -= $order->weight;
+            }
+        }
+        return $this->success($ads);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -67,7 +97,6 @@ class AdvertisementController extends Controller
             'from_city' => $request->from_city,
             'to_country' => $request->to_country,
             'to_city' => $request->to_city,
-            'to' => $request->to,
             'weight' => $request->weight,
             'cost' => $request->cost,
             'date' => $request->date,

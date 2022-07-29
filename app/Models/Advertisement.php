@@ -28,10 +28,27 @@ class Advertisement extends Model
 
     }
 
-
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function orders() {
+
+        return $this->hasMany(Order::class);
+
+    }
+
+    public function available_weight($advertisement_id) {
+
+        $ads = Advertisement::find($advertisement_id);
+        $available_weight = $ads->weight;
+        foreach ($ads->orders as $order)
+        {
+            $available_weight -= $order->weight;
+        }
+
+        return $available_weight;
     }
 
 }

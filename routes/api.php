@@ -60,6 +60,9 @@ Route::group(['prefix' => 'countries'], function() {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('user')->middleware(['role:user'])->group(function () {
         Route::apiResource('advertisement', \App\Http\Controllers\api\AdvertisementController::class);
+        Route::apiResource('order', \App\Http\Controllers\api\OrdersController::class);
+        Route::get('advertisements/my', [\App\Http\Controllers\api\AdvertisementController::class, 'myAdvertisements']);
+        Route::get('orders/my', [\App\Http\Controllers\api\OrdersController::class, 'myOrders']);
         Route::get('/allowed_packages', [\App\Http\Controllers\api\AllowdPackageController::class, 'index']);
     });
 
