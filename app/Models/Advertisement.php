@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Advertisement extends Model
 {
@@ -49,6 +50,15 @@ class Advertisement extends Model
         }
 
         return $available_weight;
+    }
+
+    public function advertisement_country_city($advertisement) {
+
+        $advertisement->from_country_name = is_object(DB::table('geo')->where('id', $advertisement->from_country)->first()) ? DB::table('geo')->where('id', $advertisement->from_country)->first()->name : '';
+        $advertisement->from_city_name = is_object(DB::table('geo')->where('id', $advertisement->from_city)->first()) ? DB::table('geo')->where('id', $advertisement->from_city)->first()->name : '';
+        $advertisement->to_country_name = is_object(DB::table('geo')->where('id', $advertisement->to_country)->first()) ? DB::table('geo')->where('id', $advertisement->to_country)->first()->name : '';
+        $advertisement->to_city_name = is_object(DB::table('geo')->where('id', $advertisement->to_city)->first()) ? DB::table('geo')->where('id', $advertisement->to_city)->first()->name : '';
+        return $advertisement;
     }
 
 }

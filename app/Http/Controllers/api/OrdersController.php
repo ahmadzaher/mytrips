@@ -21,6 +21,10 @@ class OrdersController extends Controller
     public function index()
     {
         $orders = Order::with('advertisement.user')->with('user')->latest()->paginate();
+        foreach ($orders as $key => $order)
+        {
+            $orders[$key]->advertisement = Advertisement::advertisement_country_city($order->advertisement);
+        }
         return $this->success($orders);
     }
 
@@ -34,6 +38,12 @@ class OrdersController extends Controller
         $user = auth()->user();
 
         $orders = Order::with('advertisement.user')->where('user_id', $user->id)->with('user')->latest()->paginate();
+        foreach ($orders as $key => $order)
+        {
+            $orders[$key]->advertisement = Advertisement::advertisement_country_city($order->advertisement);
+            $orders[$key]->advertisement->available_weight = Advertisement::available_weight($order->advertisement->id);
+
+        }
 
         return $this->success($orders);
     }
@@ -78,11 +88,69 @@ class OrdersController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Order $order)
     {
-        //
+        $order = Order::with('advertisement.user')->with('user')->find($order->id);
+        $order->advertisement = Advertisement::advertisement_country_city($order->advertisement);
+
+        $order->advertisement->available_weight = Advertisement::available_weight($order->advertisement->id);
+        return $this->success($order);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Order  $order
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function step1(Request $request, $order_id)
+    {
+        $order = Order::with('advertisement.user')->with('user')->find($order_id);
+
+        $user = auth()->user();
+        if($user->id == $order->user_id)
+        {
+            if($order->status == 2){
+
+                return $this->error('Already verified', 403);
+            }
+            $order->status = 2;
+            $order->save();
+
+            return $this->success($order);
+        }
+
+        return $this->forbidden();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Order  $order
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function step2(Request $request, $order_id)
+    {
+        $order = Order::with('advertisement.user')->with('user')->find($order_id);
+
+        $user = auth()->user();
+        if($user->id == $order->advertisement->user->id)
+        {
+            if($order->status == 3){
+
+                return $this->error('Already verified', 403);
+            }
+            $order->status = 3;
+            $order->save();
+
+            return $this->success($order);
+        }
+
+        return $this->forbidden();
     }
 
     /**
@@ -105,8 +173,12 @@ class OrdersController extends Controller
      */
     public function destroy(Order $order)
     {
+        $order = Order::with('advertisement.user')->with('user')->find($order->id);
         $user = auth()->user();
-        if ($user->id == $order->user_id){
+        if($order->status != 1){
+            return $this->error("You can't delete a verified order", 403);
+        }
+        if ($user->id == $order->user_id || $user->id == $user->advertisement->id){
             $order->delete();
             return $this->success(null, 'Deleted Successfully!');
         }

@@ -24,11 +24,7 @@ class AdvertisementController extends Controller
         $ads = Advertisement::with('allowed_packages')->with('user')->latest()->paginate();
         foreach ($ads as $key => $advertisement)
         {
-            $ads[$key]->from_country_name = is_object(DB::table('geo')->where('id', $advertisement->from_country)->first()) ? DB::table('geo')->where('id', $advertisement->from_country)->first()->name : '';
-            $ads[$key]->from_city_name = is_object(DB::table('geo')->where('id', $advertisement->from_city)->first()) ? DB::table('geo')->where('id', $advertisement->from_city)->first()->name : '';
-            $ads[$key]->to_country_name = is_object(DB::table('geo')->where('id', $advertisement->to_country)->first()) ? DB::table('geo')->where('id', $advertisement->to_country)->first()->name : '';
-            $ads[$key]->to_city_name = is_object(DB::table('geo')->where('id', $advertisement->to_city)->first()) ? DB::table('geo')->where('id', $advertisement->to_city)->first()->name : '';
-
+            $ads[$key] = Advertisement::advertisement_country_city($ads[$key]);
         }
         return $this->success($ads);
     }
@@ -49,11 +45,7 @@ class AdvertisementController extends Controller
             ->latest()->paginate();
         foreach ($ads as $key => $advertisement)
         {
-            $ads[$key]->from_country_name = is_object(DB::table('geo')->where('id', $advertisement->from_country)->first()) ? DB::table('geo')->where('id', $advertisement->from_country)->first()->name : '';
-            $ads[$key]->from_city_name = is_object(DB::table('geo')->where('id', $advertisement->from_city)->first()) ? DB::table('geo')->where('id', $advertisement->from_city)->first()->name : '';
-            $ads[$key]->to_country_name = is_object(DB::table('geo')->where('id', $advertisement->to_country)->first()) ? DB::table('geo')->where('id', $advertisement->to_country)->first()->name : '';
-            $ads[$key]->to_city_name = is_object(DB::table('geo')->where('id', $advertisement->to_city)->first()) ? DB::table('geo')->where('id', $advertisement->to_city)->first()->name : '';
-
+            $ads[$key] = Advertisement::advertisement_country_city($ads[$key]);
             $ads[$key]->available_weight = $ads[$key]->weight;
             foreach ($advertisement->orders as $order)
             {
@@ -113,12 +105,8 @@ class AdvertisementController extends Controller
         $advertisement = Advertisement::with('allowed_packages')->with('user')->find($advertisement->id);
 
 
-
-        $advertisement->from_country_name = is_object(DB::table('geo')->where('id', $request->from_country)->first()) ? DB::table('geo')->where('id', $request->from_country)->first()->name : '';
-        $advertisement->from_city_name = is_object(DB::table('geo')->where('id', $request->from_city)->first()) ? DB::table('geo')->where('id', $request->from_city)->first()->name : '';
-        $advertisement->to_country_name = is_object(DB::table('geo')->where('id', $request->to_country)->first()) ? DB::table('geo')->where('id', $request->to_country)->first()->name : '';
-        $advertisement->to_city_name = is_object(DB::table('geo')->where('id', $request->to_city)->first()) ? DB::table('geo')->where('id', $request->to_city)->first()->name : '';
-
+        $advertisement->available_weight = Advertisement::available_weight($advertisement->id);
+        $advertisement = Advertisement::advertisement_country_city($advertisement);
         return $this->success($advertisement, null, 201);
     }
 
@@ -131,11 +119,8 @@ class AdvertisementController extends Controller
     public function show(Advertisement $advertisement)
     {
         $advertisement = Advertisement::with('allowed_packages')->with('user')->find($advertisement->id);
-        $advertisement->from_country_name = is_object(DB::table('geo')->where('id', $advertisement->from_country)->first()) ? DB::table('geo')->where('id', $advertisement->from_country)->first()->name : '';
-        $advertisement->from_city_name = is_object(DB::table('geo')->where('id', $advertisement->from_city)->first()) ? DB::table('geo')->where('id', $advertisement->from_city)->first()->name : '';
-        $advertisement->to_country_name = is_object(DB::table('geo')->where('id', $advertisement->to_country)->first()) ? DB::table('geo')->where('id', $advertisement->to_country)->first()->name : '';
-        $advertisement->to_city_name = is_object(DB::table('geo')->where('id', $advertisement->to_city)->first()) ? DB::table('geo')->where('id', $advertisement->to_city)->first()->name : '';
-
+        $advertisement->available_weight = Advertisement::available_weight($advertisement->id);
+        $advertisement = Advertisement::advertisement_country_city($advertisement);
         return $this->success($advertisement);
     }
 
@@ -179,11 +164,9 @@ class AdvertisementController extends Controller
         $advertisement->allowed_packages()->sync($allowed_packages);
         $advertisement = Advertisement::with('allowed_packages')->with('user')->find($advertisement->id);
 
-        $advertisement->from_country_name = is_object(DB::table('geo')->where('id', $request->from_country)->first()) ? DB::table('geo')->where('id', $request->from_country)->first()->name : '';
-        $advertisement->from_city_name = is_object(DB::table('geo')->where('id', $request->from_city)->first()) ? DB::table('geo')->where('id', $request->from_city)->first()->name : '';
-        $advertisement->to_country_name = is_object(DB::table('geo')->where('id', $request->to_country)->first()) ? DB::table('geo')->where('id', $request->to_country)->first()->name : '';
-        $advertisement->to_city_name = is_object(DB::table('geo')->where('id', $request->to_city)->first()) ? DB::table('geo')->where('id', $request->to_city)->first()->name : '';
 
+        $advertisement->available_weight = Advertisement::available_weight($advertisement->id);
+        $advertisement = Advertisement::advertisement_country_city($advertisement);
         return $this->success($advertisement);
     }
 

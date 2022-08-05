@@ -12,7 +12,8 @@ class Order extends Model
         'weight',
         'additional_information',
         'advertisement_id',
-        'user_id'
+        'user_id',
+        'status'
     ];
 
 

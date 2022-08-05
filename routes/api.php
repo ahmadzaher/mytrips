@@ -64,6 +64,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('advertisements/my', [\App\Http\Controllers\api\AdvertisementController::class, 'myAdvertisements']);
         Route::get('orders/my', [\App\Http\Controllers\api\OrdersController::class, 'myOrders']);
         Route::get('/allowed_packages', [\App\Http\Controllers\api\AllowdPackageController::class, 'index']);
+        Route::patch('/order/step1/{id}', [\App\Http\Controllers\api\OrdersController::class, 'step1']);
+        Route::patch('/order/step2/{id}', [\App\Http\Controllers\api\OrdersController::class, 'step2']);
     });
 
 
