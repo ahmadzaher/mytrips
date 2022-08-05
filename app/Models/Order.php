@@ -13,7 +13,9 @@ class Order extends Model
         'additional_information',
         'advertisement_id',
         'user_id',
-        'status'
+        'status',
+        'rated',
+        'rating'
     ];
 
 

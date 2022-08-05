@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusToOrdersTable extends Migration
+class AddIsRatedToOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddStatusToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->enum('status', [1, 2, 3])->default(1);
+            $table->boolean('rated')->default(0);
+            $table->integer('rating')->default(0);
         });
     }
 
@@ -26,7 +27,8 @@ class AddStatusToOrdersTable extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn('rated');
+            $table->dropColumn('rating');
         });
     }
 }

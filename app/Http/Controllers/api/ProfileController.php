@@ -31,6 +31,7 @@ class ProfileController extends Controller
 
         if(count($roles) > 0)
             $user->role = $roles[0];
+        $user->average_ratings = $user->averageRating;
 
         return $this->success($user);
     }
@@ -76,6 +77,7 @@ class ProfileController extends Controller
         $user->avatar = $user->getFirstMediaUrl('thumb', 'thumb');
         $user->confirmation_video = $user->getFirstMediaUrl('confirmation_video', 'confirmation_video');
         $user->confirmation_photo = $user->getFirstMediaUrl('confirmation_photo', 'confirmation_photo');
+        $user->average_ratings = $user->averageRating;
         unset($user->media);
 
 

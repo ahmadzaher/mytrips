@@ -25,6 +25,7 @@ class AdvertisementController extends Controller
         foreach ($ads as $key => $advertisement)
         {
             $ads[$key] = Advertisement::advertisement_country_city($ads[$key]);
+            $ads[$key]->user->average_ratings = $ads[$key]->user->averageRating;
         }
         return $this->success($ads);
     }
@@ -47,6 +48,7 @@ class AdvertisementController extends Controller
         {
             $ads[$key] = Advertisement::advertisement_country_city($ads[$key]);
             $ads[$key]->available_weight = $ads[$key]->weight;
+            $ads[$key]->user->average_ratings = $ads[$key]->user->averageRating;
             foreach ($advertisement->orders as $order)
             {
                 $ads[$key]->available_weight -= $order->weight;

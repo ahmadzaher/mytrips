@@ -13,9 +13,11 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use willvincent\Rateable\Rateable;
 
 class User extends Authenticatable implements HasMedia
 {
+    use Rateable;
     use LaratrustUserTrait;
     use HasApiTokens, HasFactory, Notifiable;
     use InteractsWithMedia;

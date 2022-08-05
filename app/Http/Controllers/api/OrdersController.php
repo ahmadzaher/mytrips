@@ -85,6 +85,41 @@ class OrdersController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rate(Request $request, $order_id)
+    {
+        $request->validate([
+            'rate' => ['required', 'integer', 'between:1,10']
+        ]);
+        $order = Order::with('advertisement.user')->with('user')->find($order_id);
+
+        $user = auth()->user();
+        if($user->id == $order->user_id && $order->status == 3)
+        {
+            if($order->rated == 1){
+                DB::table('ratings')->where([
+                    'rateable_id' => $order->advertisement->user->id,
+                    'user_id' => $user->id,
+                    'rating' => $order->rating
+                ])->limit(1)->delete();
+            }
+            $order->rated = 1;
+            $order->rating = $request->rate;
+            $order->save();
+            $order->advertisement->user->rate($request->rate);
+            return $this->success([
+                'ratings' => $order->advertisement->user->averageRating
+            ]);
+        }
+
+        return $this->forbidden();
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\Models\Order  $order
