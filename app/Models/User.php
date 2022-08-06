@@ -52,7 +52,8 @@ class User extends Authenticatable implements HasMedia
         'email',
         'password',
         'is_confirmed',
-        'phone_number'
+        'phone_number',
+        'isVerified'
     ];
 
     /**
