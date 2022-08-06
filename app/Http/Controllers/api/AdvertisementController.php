@@ -21,13 +21,35 @@ class AdvertisementController extends Controller
      */
     public function index(Request $request)
     {
-        $ads = Advertisement::with('allowed_packages')->with('user')->latest()->paginate();
+        $from_country = $request->from_country;
+        $to_country = $request->to_country;
+        $from_city = $request->from_city;
+        $to_city = $request->to_city;;
+        $is_confirmed = $request->is_confirmed;
+
+        $ads = Advertisement::with('allowed_packages')
+            ->with('user')
+            ->whereHas('user', function ($query) use ($is_confirmed) {
+                if($is_confirmed)
+                    $query->where('users.is_confirmed', 1);
+            })
+            ->where(function ($query) use ($from_country, $to_country, $from_city, $to_city) {
+                if($from_country != null)
+                    $query->where('from_country', $from_country);
+                if($to_country != null)
+                    $query->where('to_country', $to_country);
+                if($from_city != null)
+                    $query->where('from_city', $from_city);
+                if($to_city != null)
+                    $query->where('to_city', $to_city);
+            })
+            ->latest();
         foreach ($ads as $key => $advertisement)
         {
             $ads[$key] = Advertisement::advertisement_country_city($ads[$key]);
             $ads[$key]->user->average_ratings = $ads[$key]->user->averageRating;
         }
-        return $this->success($ads);
+        return $this->success($ads->paginate());
     }
 
 
