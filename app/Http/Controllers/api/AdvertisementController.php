@@ -43,13 +43,13 @@ class AdvertisementController extends Controller
                 if($to_city != null)
                     $query->where('to_city', $to_city);
             })
-            ->latest();
+            ->latest()->paginate();
         foreach ($ads as $key => $advertisement)
         {
             $ads[$key] = Advertisement::advertisement_country_city($ads[$key]);
             $ads[$key]->user->average_ratings = $ads[$key]->user->averageRating;
         }
-        return $this->success($ads->paginate());
+        return $this->success($ads);
     }
 
 
