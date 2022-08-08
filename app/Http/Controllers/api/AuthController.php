@@ -66,12 +66,13 @@ class AuthController extends Controller
         $twilio_sid = getenv("TWILIO_SID");
         $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
         $twilio = new Client($twilio_sid, $token);
+
         $verification = $twilio->verify->v2->services($twilio_verify_sid)
             ->verificationChecks
-            ->create(['Code' => $data['verification_code'], 'To' => '+' . $data['phone_number']]);
+            ->create(['Code' => $request->verification_code, 'To' =>  $request->phone_number]);
 
         if ($verification->valid) {
-            $user = tap(User::where('phone_number', '+' . $data['phone_number']))->update(['isVerified' => true]);
+            $user = tap(User::where('phone_number', $request->phone_number))->update(['isVerified' => true]);
             /* Authenticate user */
             $user = $user->first();
 
