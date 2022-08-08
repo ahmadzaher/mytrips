@@ -20,7 +20,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = Order::with('advertisement.user')->with('user')->latest()->paginate();
+        $orders = Order::with('advertisement.user')->with('advertisement.allowed_packages')->with('user')->latest()->paginate();
         foreach ($orders as $key => $order)
         {
             $orders[$key]->advertisement = Advertisement::advertisement_country_city($order->advertisement);
@@ -37,7 +37,7 @@ class OrdersController extends Controller
     {
         $user = auth()->user();
 
-        $orders = Order::with('advertisement.user')->where('user_id', $user->id)->with('user')->latest()->paginate();
+        $orders = Order::with('advertisement.user')->with('advertisement.allowed_packages')->where('user_id', $user->id)->with('user')->latest()->paginate();
         foreach ($orders as $key => $order)
         {
             $orders[$key]->advertisement = Advertisement::advertisement_country_city($order->advertisement);
