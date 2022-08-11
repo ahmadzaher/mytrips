@@ -115,8 +115,10 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->phone_number = $request->phone_number;
-        $user->password = bcrypt($request->password);
+        if(isset($request->phone_number))
+            $user->phone_number = $request->phone_number;
+        if(isset($request->password))
+            $user->password = bcrypt($request->password);
         $user->save();
 
         if (isset($request->avatar)) {
