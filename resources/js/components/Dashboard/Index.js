@@ -22,6 +22,10 @@ import GroupIcon from '@mui/icons-material/Group';
 import { AuthContext} from "../../Context/UserContext";
 import CustomizedSnackbars from "../reusable/CustomizedSnackbars";
 import {useContext} from "react";
+import { ListSubheader } from '@mui/material';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { AllInbox, ProductionQuantityLimits } from '@mui/icons-material';
+
 
 const drawerWidth = 240;
 
@@ -106,11 +110,9 @@ export default function Index({ component, title } ) {
 
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex' }} style={{backgroundColor: '#f5f5f5'}}>
             <CssBaseline />
-            <AppBar position="fixed" open={open} sx={{
-                bgcolor: 'primary.main',
-            }}>
+            <AppBar position="fixed" open={open} style={{backgroundColor: '#636f83'}}>
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -136,7 +138,7 @@ export default function Index({ component, title } ) {
                         overflow: 'hidden',
                         height: 64,
                         width: '100%'
-                    }} src={"https://patrickcoombe.com/wp-content/uploads/2015/09/new-google-logo-2015.png"} alt={"logo"} />
+                    }} src={"http://localhost/my_trips/public/images/logo.jpeg"} alt={"logo"} />
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>
@@ -163,7 +165,7 @@ export default function Index({ component, title } ) {
                         >
                             <DashboardIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'Dashboard'} sx={{ opacity: open ? 1 : 0 }} />
+                        <ListItemText primary={'لوحة التحكم'} sx={{ opacity: open ? 1 : 0 }} />
                     </ListItemButton>
                     {/*users*/}
                     <ListItemButton
@@ -184,7 +186,7 @@ export default function Index({ component, title } ) {
                         >
                             <GroupIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'Users'} sx={{ opacity: open ? 1 : 0 }} />
+                        <ListItemText primary={'قائمة المستخدمين'} sx={{ opacity: open ? 1 : 0 }} />
                     </ListItemButton>
 
                     {/* staffs */}
@@ -206,7 +208,7 @@ export default function Index({ component, title } ) {
                         >
                             <GroupIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'Staffs'} sx={{ opacity: open ? 1 : 0 }} />
+                        <ListItemText primary={'قائمة الموظفين'} sx={{ opacity: open ? 1 : 0 }} />
                     </ListItemButton>
 
                     {/* allowed packages */}
@@ -228,7 +230,7 @@ export default function Index({ component, title } ) {
                         >
                             <ArchiveIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'Allowed Packages'} sx={{ opacity: open ? 1 : 0 }} />
+                        <ListItemText primary={'الأغراض المسموحة'} sx={{ opacity: open ? 1 : 0 }} />
                     </ListItemButton>
 
                     <ListItemButton
@@ -248,13 +250,60 @@ export default function Index({ component, title } ) {
                         >
                             <ExitToAppIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'Logout'} sx={{ opacity: open ? 1 : 0 }} />
+                        <ListItemText primary={'تسجيل الخروج'} sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+            <Divider sx={{ my: 1 }} />
+                    {/* sub header */}
+                    <ListSubheader component="div" inset style={{paddingLeft: 33}}>
+                        {'الاعلانات والطلبيات'}
+                    </ListSubheader>
+
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        component={'a'}
+                        href={'#/app/advertisements'}
+                    >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <ProductionQuantityLimits />
+                        </ListItemIcon>
+                        <ListItemText primary={'قائمة الاعلانات'} sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        component={'a'}
+                        href={'#/app/orders'}
+                    >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <AllInbox />
+                        </ListItemIcon>
+                        <ListItemText primary={'قائمة الطلبيات'} sx={{ opacity: open ? 1 : 0 }} />
                     </ListItemButton>
                 </List>
                 {/*<Divider />*/}
 
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: '#f5f5f5', height: '100vh', overflow: 'auto' }} >
                 <DrawerHeader />
                 <CustomizedSnackbars />
                 {component}

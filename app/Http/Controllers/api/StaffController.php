@@ -52,7 +52,7 @@ class StaffController extends Controller
         ]);
         $user->save();
 
-        $user->attachRole('user');
+        $user->attachRole('staff');
 
         if (isset($request->avatar)) {
             $user->clearMediaCollection('thumb');

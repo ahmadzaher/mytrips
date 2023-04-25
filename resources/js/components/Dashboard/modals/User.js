@@ -65,11 +65,11 @@ export default function User({ setIsReady, userId, setUserId, setOpen,open, hand
     return (
         <div>
             <Button size="large" variant="outlined" onClick={handleClickOpen}>
-                Add new {type === 'user' ? 'User' : 'Staff'}
+                اضافة {type === 'user' ? 'مستخدم' : 'موظف'}
             </Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>
-                    {userId !== '' ? 'Edit User Information' : 'Add New User'}
+                    {userId !== '' ? 'تعديل معلومات المستخدم' : 'اضافة مستخدم جديد'}
                 </DialogTitle>
                 <DialogContent>
                     {errorMessage !== '' ?
@@ -81,7 +81,7 @@ export default function User({ setIsReady, userId, setUserId, setOpen,open, hand
                         autoFocus
                         margin="dense"
                         id="name"
-                        label="Name"
+                        label="الاسم"
                         type="text"
                         fullWidth
                         variant="standard"
@@ -94,7 +94,7 @@ export default function User({ setIsReady, userId, setUserId, setOpen,open, hand
                     <TextField
                         margin="dense"
                         id="email"
-                        label="Email Address"
+                        label="البريد الالكتروني"
                         type="email"
                         fullWidth
                         variant="standard"
@@ -106,7 +106,7 @@ export default function User({ setIsReady, userId, setUserId, setOpen,open, hand
                     <TextField
                         margin="dense"
                         id="phone_number"
-                        label="Phone Number"
+                        label="رقم الهاتف"
                         type="text"
                         fullWidth
                         variant="standard"
@@ -118,7 +118,7 @@ export default function User({ setIsReady, userId, setUserId, setOpen,open, hand
                     <TextField
                         margin="dense"
                         id="password"
-                        label="Password"
+                        label="كلمة المرور"
                         type="password"
                         fullWidth
                         variant="standard"
@@ -130,7 +130,7 @@ export default function User({ setIsReady, userId, setUserId, setOpen,open, hand
                     <TextField
                         margin="dense"
                         id="password_confirmation"
-                        label="Password Confirmation"
+                        label="تأكيد كلمة المرور"
                         type="password"
                         fullWidth
                         variant="standard"

@@ -63,11 +63,11 @@ export default function AllowedPackage({ setIsReady, id, setId, setOpen,open, ha
     return (
         <div>
             <Button size="large" variant="outlined" onClick={handleClickOpen}>
-                Add new allowed package
+                اضافة غرض مسموح جديد
             </Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>
-                    Edit Allowed Package Information
+                    تعديل معلومات الغرض المسموح
                 </DialogTitle>
                 <DialogContent>
                     {errorMessage !== '' ?
@@ -79,7 +79,7 @@ export default function AllowedPackage({ setIsReady, id, setId, setOpen,open, ha
                         autoFocus
                         margin="dense"
                         id="name"
-                        label="Name"
+                        label="الاسم"
                         type="text"
                         fullWidth
                         variant="standard"
@@ -92,7 +92,7 @@ export default function AllowedPackage({ setIsReady, id, setId, setOpen,open, ha
                     <TextField
                         margin="dense"
                         id="description"
-                        label="Description"
+                        label="الوصف"
                         type="text"
                         fullWidth
                         variant="standard"

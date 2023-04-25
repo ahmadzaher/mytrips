@@ -9,6 +9,8 @@ import Loading from './Loading/Loading';
 import { AuthContext } from '../Context/UserContext';
 import Users from "./Dashboard/Users";
 import AllowedPackages from "./Dashboard/AllowedPackages";
+import Advertisements from './Dashboard/Advertisements';
+import Orders from './Dashboard/Orders';
 
 function TheRoutes() {
 
@@ -24,11 +26,13 @@ function TheRoutes() {
                             <Route path="/app/login" element={<Login />} />
                         </Route>
                         <Route path="/" element={<ProtectedRoute />}>
-                            <Route path="/" element={<Index component={Dashboard} />} />
-                            <Route path="/app/dashboard" element={<Index component={<Dashboard />} />} />
-                            <Route path="/app/users" element={<Index title={'User List'} component={<Users type={'user'} />} />} />
-                            <Route path="/app/staffs" element={<Index title={'Staff List'} component={<Users type={'staff/user'} />} />} />
-                            <Route path="/app/allowed_packages" element={<Index title={'Allowed Packages'} component={<AllowedPackages />} />} />
+                            <Route path="/" element={<Index title={'لوحة التحكم'} component={Dashboard} />} />
+                            <Route path="/app/dashboard" element={<Index title={'لوحة التحكم'} component={<Dashboard />} />} />
+                            <Route path="/app/users" element={<Index title={'قائمة المستخدمين'} component={<Users type={'user'} />} />} />
+                            <Route path="/app/staffs" element={<Index title={'قائمة الموظفين'} component={<Users type={'staff/user'} />} />} />
+                            <Route path="/app/allowed_packages" element={<Index title={'الأغراض المسموحة'} component={<AllowedPackages />} />} />
+                            <Route path="/app/advertisements" element={<Index title={'قائمة الاعلانات'} component={<Advertisements />} />} />
+                            <Route path="/app/orders" element={<Index title={'قائمة الطلبيات'} component={<Orders />} />} />
                         </Route>
                 </Routes>
             </HashRouter>

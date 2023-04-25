@@ -46,7 +46,7 @@ export const UserContext = props => {
     setLoginPending(true);
     setLoginSuccess(false)
     setLoginError(null)
-    setIsReady(false)
+    // setIsReady(false)
 
 
     axios.post('api/auth/login', {
@@ -55,6 +55,7 @@ export const UserContext = props => {
     })
     .then(res => {
         if (res.data !== undefined){
+            handleAlert('success', 'Logged in Successfully!')
             setToken(res.data.data.token)
             setLoginSuccess(true);
             setName(res.data.data.user.name)
@@ -62,9 +63,9 @@ export const UserContext = props => {
             setPhoneNumber(res.data.data.user.phone_number)
         }
     })
-    .catch(e => console.log(e))
-    .then(() => {
-        window.location.reload()
+    .catch(e => {
+        console.log(e)
+        handleAlert('error', 'Credentials not match')
     })
   }
 

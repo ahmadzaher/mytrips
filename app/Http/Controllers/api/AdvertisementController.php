@@ -4,6 +4,8 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
+use App\Models\Order;
+use App\Models\User;
 use App\Traits\ApiResponser;
 use Igaster\LaravelCities\Geo;
 use Illuminate\Http\Request;
@@ -44,6 +46,65 @@ class AdvertisementController extends Controller
                     $query->where('to_city', $to_city);
             })
             ->latest()->paginate();
+        foreach ($ads as $key => $advertisement)
+        {
+            $ads[$key] = Advertisement::advertisement_country_city($ads[$key]);
+            $ads[$key]->user->average_ratings = $ads[$key]->user->averageRating;
+        }
+        return $this->success($ads);
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function dashboard_statistics(Request $request)
+    {
+
+        $number_of_advertisements = Advertisement::count();
+        $number_of_orders = Order::count();
+        $number_of_delivered_orders = Order::where('status', 3)->count();
+        $number_of_users = User::count();
+        return $this->success([
+            'number_of_advertisements' => $number_of_advertisements,
+            'number_of_orders' => $number_of_orders,
+            'number_of_delivered_orders' => $number_of_delivered_orders,
+            'number_of_users' => $number_of_users,
+        ]);
+    }
+
+
+    public function all(Request $request)
+    {
+        $from_country = $request->from_country;
+        $to_country = $request->to_country;
+        $from_city = $request->from_city;
+        $to_city = $request->to_city;;
+        $is_confirmed = $request->is_confirmed;
+        $latest = $request->latest;
+
+        $ads = Advertisement::with('allowed_packages')
+            ->with('user')
+            ->whereHas('user', function ($query) use ($is_confirmed) {
+                if($is_confirmed)
+                    $query->where('users.is_confirmed', 1);
+            })
+            ->where(function ($query) use ($from_country, $to_country, $from_city, $to_city) {
+                if($from_country != null)
+                    $query->where('from_country', $from_country);
+                if($to_country != null)
+                    $query->where('to_country', $to_country);
+                if($from_city != null)
+                    $query->where('from_city', $from_city);
+                if($to_city != null)
+                    $query->where('to_city', $to_city);
+            })
+            ->latest();
+        if($latest)
+            $ads = $ads->take(8);
+        $ads = $ads->get();
         foreach ($ads as $key => $advertisement)
         {
             $ads[$key] = Advertisement::advertisement_country_city($ads[$key]);
@@ -203,7 +264,7 @@ class AdvertisementController extends Controller
     public function destroy(Advertisement $advertisement)
     {
         $user = auth()->user();
-        if ($user->id == $advertisement->user_id){
+        if ($user->id == $advertisement->user_id || $user->hasRole('admin')){
             $advertisement->delete();
             return $this->success(null, 'Deleted Successfully!');
         }

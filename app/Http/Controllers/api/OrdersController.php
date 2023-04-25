@@ -18,9 +18,14 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with('advertisement.user')->with('advertisement.allowed_packages')->with('user')->latest()->paginate();
+        $orders = Order::with('advertisement.user')->with('advertisement.allowed_packages')->with('user')->latest();
+
+        $latest = $request->latest;
+        if($latest)
+            $orders = $orders->take(8);
+        $orders = $orders->get();
         foreach ($orders as $key => $order)
         {
             $orders[$key]->advertisement = Advertisement::advertisement_country_city($order->advertisement);
@@ -213,7 +218,7 @@ class OrdersController extends Controller
         if($order->status != 1){
             return $this->error("You can't delete a verified order", 403);
         }
-        if ($user->id == $order->user_id || $user->id == $user->advertisement->id){
+        if ($user->id == $order->user_id || $user->id == $user->advertisement->id || $user->hasRole('admin')){
             $order->delete();
             return $this->success(null, 'Deleted Successfully!');
         }

@@ -11,7 +11,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Grid from "@mui/material/Grid";
 import User from "./modals/User";
-import { Divider, Avatar } from '@mui/material';
+import {Divider, Avatar, Paper} from '@mui/material';
 import ConfirmUser from "./modals/ConfirmUser";
 
 export default function Users({ type }) {
@@ -22,7 +22,7 @@ export default function Users({ type }) {
             field: 'name',
             renderHeader: () => (
                 <b style={{ color: '#5e5d5d' }}>
-                    {'Name '}
+                    {'الاسم '}
                 </b>
             ),
             renderCell: (params) => (
@@ -43,7 +43,7 @@ export default function Users({ type }) {
             field: 'email',
             renderHeader: () => (
                 <b style={{ color: '#5e5d5d' }}>
-                    {'Email '}
+                    {'البريد الالكتروني '}
                 </b>
             ),
             width: 300
@@ -52,7 +52,7 @@ export default function Users({ type }) {
             field: 'phone_number',
             renderHeader: () => (
                 <b style={{ color: '#5e5d5d' }}>
-                    {'Phone Number '}
+                    {'رقم الجوال '}
                 </b>
             ),
             width: 160
@@ -61,7 +61,7 @@ export default function Users({ type }) {
             field: 'created_at',
             renderHeader: () => (
                 <b style={{ color: '#5e5d5d' }}>
-                    {'Created At '}
+                    {'تاريخ التسجيل '}
                 </b>
             ),
             width: 120
@@ -70,13 +70,13 @@ export default function Users({ type }) {
             field: 'is_confirmed',
             renderHeader: () => (
                 <b style={{ color: '#5e5d5d' }}>
-                    {'Is Confirmed '}
+                    {'هل تم تأكيده '}
                 </b>
             ),
             renderCell: (params) => (
                 <>
                     <Typography color={params.row.is_confirmed === 0 ? "error.main" : 'primary'}>
-                        {params.row.is_confirmed === 0 ? 'No' : 'Yes'}
+                        {params.row.is_confirmed === 0 ? 'لا' : 'نعم'}
                     </Typography>
                     {params.row.is_confirmed === 0 && params.row.confirmation_video !== '' && params.row.confirmation_photo !== '' ?
                         <IconButton color="primary" onClick={() => editConfirm(params.row.id)}>
@@ -112,7 +112,7 @@ export default function Users({ type }) {
             field: 'actions',
             renderHeader: () => (
                 <b style={{ color: '#5e5d5d' }}>
-                    {'Actions '}
+                    {'التحكم '}
                 </b>
             ),
             renderCell: (params) => (
@@ -240,7 +240,7 @@ export default function Users({ type }) {
     };
 
     return (
-        <div>
+        <Paper sx={{ p: 2 }} style={{backgroundColor: '#fff'}}>
             <User
                 setIsReady={setIsReady}
                 open={open}
@@ -292,6 +292,6 @@ export default function Users({ type }) {
                     disableDensitySelector
                 />
             </div>
-        </div>
+        </Paper>
     );
 }

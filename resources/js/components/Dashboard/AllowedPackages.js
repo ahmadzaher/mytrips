@@ -9,6 +9,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Grid from "@mui/material/Grid";
 import { Divider } from '@mui/material';
 import AllowedPackage from "./modals/AllowedPackage";
+import { Paper } from "@mui/material";
 
 export default function AllowedPackages() {
 
@@ -18,7 +19,7 @@ export default function AllowedPackages() {
             field: 'name',
             renderHeader: () => (
                 <b style={{ color: '#5e5d5d' }}>
-                    {'Name '}
+                    {'الاسم '}
                 </b>
             ),
             width: 300
@@ -27,7 +28,7 @@ export default function AllowedPackages() {
             field: 'description',
             renderHeader: () => (
                 <b style={{ color: '#5e5d5d' }}>
-                    {'Description '}
+                    {'الوصف '}
                 </b>
             ),
             width: 450
@@ -36,7 +37,7 @@ export default function AllowedPackages() {
             field: 'actions',
             renderHeader: () => (
                 <b style={{ color: '#5e5d5d' }}>
-                    {'Actions '}
+                    {'التحكم '}
                 </b>
             ),
             renderCell: (params) => (
@@ -122,7 +123,7 @@ export default function AllowedPackages() {
     };
 
     return (
-        <div>
+        <Paper sx={{ p: 2 }} style={{backgroundColor: '#fff'}}>
             <AllowedPackage
                 setIsReady={setIsReady}
                 open={open}
@@ -149,6 +150,6 @@ export default function AllowedPackages() {
                     loading={!isReady}
                 />
             </div>
-        </div>
+        </Paper>
     );
 }

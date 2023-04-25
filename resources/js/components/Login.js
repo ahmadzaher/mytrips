@@ -10,7 +10,7 @@ import {
 import { AuthContext } from "../Context/UserContext";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Avatar from '@mui/material/Avatar';
-
+import CustomizedSnackbars from "./reusable/CustomizedSnackbars";
 
 function Login() {
 
@@ -25,6 +25,7 @@ function Login() {
 
     return (
         <Container maxWidth={"xs"}>
+            <CustomizedSnackbars />
             <CssBaseline/>
             <Box
                 sx={{

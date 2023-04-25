@@ -74,8 +74,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('admin')->middleware(['role:admin|staff'])->group(function () {
         Route::apiResource('advertisement', \App\Http\Controllers\api\AdvertisementController::class);
+        Route::apiResource('order', \App\Http\Controllers\api\OrdersController::class);
         Route::apiResource('allowed_packages', \App\Http\Controllers\api\AllowdPackageController::class);
         Route::apiResource('user', \App\Http\Controllers\api\UserController::class);
+        Route::get('orders', [\App\Http\Controllers\api\OrdersController::class, 'index']);
+        Route::get('advertisements', [\App\Http\Controllers\api\AdvertisementController::class, 'all']);
+        Route::get('dashboard/statistics', [\App\Http\Controllers\api\AdvertisementController::class, 'dashboard_statistics']);
 
         Route::prefix('staff')->group(function () {
             Route::apiResource('user', \App\Http\Controllers\api\StaffController::class);
