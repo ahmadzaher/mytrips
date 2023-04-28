@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Order extends Model
 {
@@ -27,7 +28,10 @@ class Order extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('d M, Y');
+        $user = Auth::user();
+        if($user->hasRole('admin'))
+            return Carbon::parse($value)->format('d M, Y');
+        return  $value;
     }
 
 

@@ -42,7 +42,7 @@ export default function Advertisements() {
                         <TableCell>الاسم</TableCell>
                         <TableCell>مشحون من</TableCell>
                         <TableCell>مشحون الى</TableCell>
-                        <TableCell>Weight</TableCell>
+                        <TableCell>الوزن</TableCell>
                         <TableCell align="center">التكلفة لكل كيلوغرام</TableCell>
                         {/* <TableCell align="center">Total Cost</TableCell> */}
                     </TableRow>

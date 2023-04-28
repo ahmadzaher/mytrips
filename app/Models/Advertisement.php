@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Advertisement extends Model
@@ -55,7 +56,10 @@ class Advertisement extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('d M, Y');
+        $user = Auth::user();
+        if($user->hasRole('admin'))
+            return Carbon::parse($value)->format('d M, Y');
+        return  $value;
     }
 
     public function advertisement_country_city($advertisement) {

@@ -190,26 +190,26 @@ export default function Index({ component, title } ) {
                     </ListItemButton>
 
                     {/* staffs */}
-                    <ListItemButton
-                        sx={{
-                            minHeight: 48,
-                            justifyContent: open ? 'initial' : 'center',
-                            px: 2.5,
-                        }}
-                        component={'a'}
-                        href={'#/app/staffs'}
-                    >
-                        <ListItemIcon
-                            sx={{
-                                minWidth: 0,
-                                mr: open ? 3 : 'auto',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <GroupIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'قائمة الموظفين'} sx={{ opacity: open ? 1 : 0 }} />
-                    </ListItemButton>
+                    {/*<ListItemButton*/}
+                    {/*    sx={{*/}
+                    {/*        minHeight: 48,*/}
+                    {/*        justifyContent: open ? 'initial' : 'center',*/}
+                    {/*        px: 2.5,*/}
+                    {/*    }}*/}
+                    {/*    component={'a'}*/}
+                    {/*    href={'#/app/staffs'}*/}
+                    {/*>*/}
+                    {/*    <ListItemIcon*/}
+                    {/*        sx={{*/}
+                    {/*            minWidth: 0,*/}
+                    {/*            mr: open ? 3 : 'auto',*/}
+                    {/*            justifyContent: 'center',*/}
+                    {/*        }}*/}
+                    {/*    >*/}
+                    {/*        <GroupIcon />*/}
+                    {/*    </ListItemIcon>*/}
+                    {/*    <ListItemText primary={'قائمة الموظفين'} sx={{ opacity: open ? 1 : 0 }} />*/}
+                    {/*</ListItemButton>*/}
 
                     {/* allowed packages */}
                     <ListItemButton
