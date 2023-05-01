@@ -26,21 +26,12 @@ class AuthController extends Controller
             'avatar' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
-
-        $token = getenv("TWILIO_AUTH_TOKEN");
-        $twilio_sid = getenv("TWILIO_SID");
-        $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
-
-        $twilio = new Client($twilio_sid, $token);
-        $twilio->verify->v2->services($twilio_verify_sid)
-            ->verifications
-            ->create($request['phone_number'], "sms");
-
         $user = User::create([
             'name' => $request['name'],
             'password' => bcrypt($request['password']),
             'email' => $request['email'],
-            'phone_number' => $request->phone_number
+            'phone_number' => $request->phone_number,
+            'isVerified' => true
         ]);
 
         $user->attachRole('user');
