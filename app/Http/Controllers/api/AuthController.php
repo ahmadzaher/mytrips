@@ -34,13 +34,16 @@ class AuthController extends Controller
             'isVerified' => true
         ]);
 
+        $token = $user->createToken('API Token')->plainTextToken;
+
         $user->attachRole('user');
 
         return response([
             'status' => 'Success',
             'message' => null,
             'data' => [
-                'phone_number' => $request->phone_number
+                'phone_number' => $request->phone_number,
+                'token' => $token
             ]
         ]);
 
