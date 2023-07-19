@@ -33,6 +33,7 @@ class AuthController extends Controller
             'phone_number' => $request->phone_number,
             'isVerified' => true
         ]);
+        $user->sendEmailVerificationNotification();
 
         $token = $user->createToken('API Token')->plainTextToken;
 
@@ -47,6 +48,16 @@ class AuthController extends Controller
             ]
         ]);
 
+    }
+
+    public function resend() {
+        $user = auth()->user();
+        if ($user->hasVerifiedEmail()) {
+            return response()->json(["message" => "Email already verified."], 403);
+        }
+        $user->sendEmailVerificationNotification();
+
+        return response()->json(["message" => "Email verification link sent on your email id"]);
     }
 
     public function verify(Request $request)

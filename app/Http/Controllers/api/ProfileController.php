@@ -32,6 +32,8 @@ class ProfileController extends Controller
         if(count($roles) > 0)
             $user->role = $roles[0];
         $user->average_ratings = $user->averageRating;
+        $user->verified = $user->email_verified_at != null;
+        unset($user->isVerified);
 
         return $this->success($user);
     }

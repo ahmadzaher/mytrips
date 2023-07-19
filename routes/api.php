@@ -32,6 +32,8 @@ Route::post('/auth/verify', [AuthController::class, 'verify']);
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 
+Route::post('/auth/resend', [AuthController::class, 'resend'])->middleware('auth:sanctum');
+
 Route::prefix('guest')->group(function () {
     Route::get('advertisement', [AdvertisementController::class, 'index']);
     Route::get('advertisement/{advertisement}', [AdvertisementController::class, 'show']);
@@ -95,4 +97,3 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
